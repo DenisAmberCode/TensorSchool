@@ -1,8 +1,65 @@
 body {
 	text-align: center;
+	font-size: 18px;
+	font-family: Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body img {
-	width: 50%;
-	height: 50%;
+header {
+	margin: 20px 0 50px 0;
+}
+
+header img {
+	width: 36px;
+}
+
+header img:hover {
+		outline: 1px solid lightgray;
+		outline-offset: 1px;
+		cursor: pointer;
+}
+
+header span {
+	text-transform: uppercase;
+	font-size: 40px;
+}
+
+header span:after {
+	content: '';
+	display: block;
+	border-top: 2px solid #000;
+	width: 180px;
+	margin: 20px auto;
+}
+
+.student {
+	width: 30%;
+	display: inline-block;
+	margin-bottom: 40px;
+}
+
+.student:hover{
+	outline: 2px solid lightgray;
+	outline-offset: 10px;
+	cursor: pointer;
+}
+
+.student img {
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+	border-radius: 50%;
+}
+
+.student p {
+	margin: 0.5em 0;
+}
+
+.student span {
+	opacity: 0.5;
+}
+
+#wrapper {
+	width: 900px;
+	max-width: 900px;
+	margin: 0 auto;
 }
