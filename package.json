@@ -1,0 +1,10 @@
+{
+  "name": "tschool_js_02",
+  "version": "1.0.0",
+  "description": "Домашняя работа JavaScript, Часть 2",
+  "main": "homework.js",
+  "scripts": {
+  },
+  "author": "",
+  "license": "ISC",
+}
