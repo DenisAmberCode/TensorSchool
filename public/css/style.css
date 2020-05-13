@@ -31,26 +31,26 @@ header span:after {
 	margin: 20px auto;
 }
 
-.student {
+.person {
 	width: 30%;
 	display: inline-block;
 	margin-bottom: 40px;
 	border-radius: 10px;
 }
 
-.student:hover{
+.person:hover{
 	cursor: pointer;
 	box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
-.student img {
+.person img {
 	width: 200px;
 	height: 200px;
 	object-fit: cover;
 	border-radius: 50%;
 }
 
-.student p {
+.person p {
 	margin: 0.5em 0;
 }
 
