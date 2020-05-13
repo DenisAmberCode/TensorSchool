@@ -299,18 +299,6 @@ window.onload = function() {
       const person = school.enroll(item);
       person.appendToDOM();
   });
-  console.log(school.schoolList.list);
 
-  personArr.forEach((item) => {
-    if (item.type === 'teacher') {
-      school.dismiss(item.fullName);
-    }
-  });
-  console.log(school.schoolList.list);
-
-  // teacherArr.forEach((item) => {
-  //     const teacher = personFactory.createTeacher(item);
-  //     teacher.appendToDOM();
-  // });
 
 };
