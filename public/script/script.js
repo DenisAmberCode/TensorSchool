@@ -9,25 +9,102 @@ class Student {
   }
 
   get birthDateStr() {
-    var months = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+    const months = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
     let d = this.birthDate.getDate();
     let m = months[this.birthDate.getMonth()];
     return d.toString().concat(" ",m);
   }
 
   get age() {
-    return (new Date().getFullYear() - this.birthDate.getFullYear()).toString().concat(" ", "лет");
+    let diffDate = Math.ceil( Math.abs(new Date().getTime() - this.birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365));
+    if (diffDate % 10 == 1 && diffDate != 11) {
+      return diffDate.toString().concat(" ", "год");
+    } else if ([2, 3, 4].includes(diffDate % 10) && [12, 13, 14].includes(diffDate % 10) == false) {
+      return diffDate.toString().concat(" ", "года");
+    } else {
+      return diffDate.toString().concat(" ", "лет");
+    }
+  }
+
+  appendStudentBlock = () => {
+    let div = document.createElement("div");
+    div.classList.add("student");
+    let img = document.createElement("img");
+    img.setAttribute("src", this.photoUrl);
+    img.setAttribute("alt", this.fullName);
+    div.appendChild(img);
+    let p = document.createElement("p");
+    p.setAttribute("title", this.fullName);
+    p.appendChild(document.createTextNode(this.fullName));
+    div.appendChild(p);
+    let span = document.createElement("span");
+    span.setAttribute("title", this.university.concat(" ", this.course));
+    span.appendChild(document.createTextNode(this.university.concat(" ", this.course)));
+    div.appendChild(span);
+    document.getElementById("students").appendChild(div);
+    return div;
+  }
+
+  openCard = (currentTarget) => {
+    let div = document.createElement("div");
+    div.classList.add("card");
+
+    let divDesc = document.createElement("div");
+    divDesc.classList.add("card__description");
+
+    let h3 = document.createElement("h3");
+    h3.appendChild(document.createTextNode(this.fullName));
+    divDesc.appendChild(h3);
+
+    let span1 = document.createElement("span");
+    span1.setAttribute("title", "День рождения");
+    span1.appendChild(document.createTextNode("День рождения"));
+    divDesc.appendChild(span1);
+
+    let p1 = document.createElement("p");
+    p1.setAttribute("title", this.birthDateStr.concat(", ", this.age));
+    p1.appendChild(document.createTextNode(this.birthDateStr.concat(", ", this.age)));
+    divDesc.appendChild(p1);
+
+    let span2 = document.createElement("span");
+    span2.setAttribute("title", "Учится");
+    span2.appendChild(document.createTextNode("Учится"));
+    divDesc.appendChild(span2);
+
+    let p2 = document.createElement("p");
+    p2.setAttribute("title", this.fullName);
+    p2.appendChild(document.createTextNode(this.university.concat(", ", this.course, " курс")));
+    divDesc.appendChild(p2);
+
+    div.appendChild(divDesc);
+
+    let divImg = document.createElement("div");
+    divImg.classList.add("card__image");
+
+    let divTimes = document.createElement("div");
+    divTimes.setAttribute("id", "times");
+    divTimes.setAttribute("class", "card__image_times");
+    divTimes.innerHTML = "&times";
+    divImg.appendChild(divTimes);
+
+    let img = document.createElement("img");
+    img.setAttribute("src", this.photoUrl);
+    divImg.appendChild(img);
+
+    div.appendChild(divImg);
+
+    currentTarget.insertBefore(div, currentTarget.firstChild)
   }
 
   render = () => {
-    return appendStudentBlock(this);
+    return this.appendStudentBlock();
   }
 
   appendToDOM = () => {
     const layout = this.render();
     layout.addEventListener('click', (event) => {
       if (document.getElementById("times") == null) {
-        openCard(this, event.currentTarget);
+        this.openCard(event.currentTarget);
       } else {
           document.getElementsByClassName('card')[0].remove();
       }
@@ -82,76 +159,6 @@ const studentArr = [
 
 ];
 
-function appendStudentBlock(student) {
-  let div = document.createElement("div");
-  div.classList.add("student");
-  let img = document.createElement("img");
-  img.setAttribute("src", student.photoUrl);
-  img.setAttribute("alt", student.fullName);
-  div.appendChild(img);
-  let p = document.createElement("p");
-  p.setAttribute("title", student.fullName);
-  p.appendChild(document.createTextNode(student.fullName));
-  div.appendChild(p);
-  let span = document.createElement("span");
-  span.setAttribute("title", student.university.concat(" ", student.course));
-  span.appendChild(document.createTextNode(student.university.concat(" ", student.course)));
-  div.appendChild(span);
-  document.getElementById("students").appendChild(div);
-  return div;
-}
-
-
-function openCard(student, currentTarget) {
-  let div = document.createElement("div");
-  div.classList.add("card");
-
-  let div_desc = document.createElement("div");
-  div_desc.classList.add("card__description");
-
-  let h3 = document.createElement("h3");
-  h3.appendChild(document.createTextNode(student.fullName));
-  div_desc.appendChild(h3);
-
-  let span1 = document.createElement("span");
-  span1.setAttribute("title", "День рождения");
-  span1.appendChild(document.createTextNode("День рождения"));
-  div_desc.appendChild(span1);
-
-  let p1 = document.createElement("p");
-  p1.setAttribute("title", student.birthDateStr.concat(", ", student.age));
-  p1.appendChild(document.createTextNode(student.birthDateStr.concat(", ", student.age)));
-  div_desc.appendChild(p1);
-
-  let span2 = document.createElement("span");
-  span2.setAttribute("title", "Учится");
-  span2.appendChild(document.createTextNode("Учится"));
-  div_desc.appendChild(span2);
-
-  let p2 = document.createElement("p");
-  p2.setAttribute("title", student.fullName);
-  p2.appendChild(document.createTextNode(student.university.concat(", ", student.course, " курс")));
-  div_desc.appendChild(p2);
-
-  div.appendChild(div_desc);
-
-  let div_img = document.createElement("div");
-  div_img.classList.add("card__image");
-
-  let div_times = document.createElement("div");
-  div_times.setAttribute("id", "times");
-  div_times.setAttribute("class", "card__image_times");
-  div_times.innerHTML = "&times";
-  div_img.appendChild(div_times);
-
-  let img = document.createElement("img");
-  img.setAttribute("src", student.photoUrl);
-  div_img.appendChild(img);
-
-  div.appendChild(div_img);
-
-  currentTarget.insertBefore(div, currentTarget.firstChild)
-}
 
 window.onload = function() {
   studentArr.forEach((item) => {
