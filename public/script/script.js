@@ -1,11 +1,11 @@
-class Student {
+class Person {
 
   constructor(params) {
+    this.type = 'Person';
     this.fullName = params.fullName;
-    this.university = params.university;
-    this.course = params.course;
     this.birthDate = params.birthDate;
-    this.photoUrl =  params.photoUrl;
+    this.photoUrl = params.photoUrl;
+    this.university = params.university;
   }
 
   get birthDateStr() {
@@ -26,7 +26,7 @@ class Student {
     }
   }
 
-  appendStudentBlock = () => {
+  appendPersonBlock = () => {
     let div = document.createElement("div");
     div.classList.add("student");
     let img = document.createElement("img");
@@ -38,8 +38,20 @@ class Student {
     p.appendChild(document.createTextNode(this.fullName));
     div.appendChild(p);
     let span = document.createElement("span");
-    span.setAttribute("title", this.university.concat(" ", this.course));
-    span.appendChild(document.createTextNode(this.university.concat(" ", this.course)));
+    switch(this.type) {
+      case 'student':
+        span.setAttribute("title", this.university.concat(" ", this.course));
+        span.appendChild(document.createTextNode(this.university.concat(" ", this.course)));
+        break;
+
+      case 'teacher':
+        span.setAttribute("title", this.post);
+        span.appendChild(document.createTextNode(this.post));
+        break;
+
+      default:
+        break;
+    }
     div.appendChild(span);
     document.getElementById("students").appendChild(div);
     return div;
@@ -67,13 +79,26 @@ class Student {
     divDesc.appendChild(p1);
 
     let span2 = document.createElement("span");
-    span2.setAttribute("title", "Учится");
-    span2.appendChild(document.createTextNode("Учится"));
-    divDesc.appendChild(span2);
-
     let p2 = document.createElement("p");
-    p2.setAttribute("title", this.fullName);
-    p2.appendChild(document.createTextNode(this.university.concat(", ", this.course, " курс")));
+    switch(this.type) {
+      case 'student':
+        span2.setAttribute("title", "Учится");
+        span2.appendChild(document.createTextNode("Учится"));
+        p2.setAttribute("title", this.university.concat(", ", this.course, " курс"));
+        p2.appendChild(document.createTextNode(this.university.concat(", ", this.course, " курс")));
+        break;
+
+      case 'teacher':
+        span2.setAttribute("title", "Преподаёт");
+        span2.appendChild(document.createTextNode("Преподаёт"));
+        p2.setAttribute("title", this.university);
+        p2.appendChild(document.createTextNode(this.university));
+        break;
+
+      default:
+        break;
+    }
+    divDesc.appendChild(span2);
     divDesc.appendChild(p2);
 
     div.appendChild(divDesc);
@@ -97,7 +122,7 @@ class Student {
   }
 
   render = () => {
-    return this.appendStudentBlock();
+    return this.appendPersonBlock();
   }
 
   appendToDOM = () => {
@@ -110,60 +135,167 @@ class Student {
       }
     });
   }
+}
+
+
+class Student extends Person {
+
+  constructor(params) {
+    super(params);
+    this.course = params.course;
+    this.type = 'student';
+  }
 
 }
 
-const studentArr = [
+
+class Teacher extends Person {
+
+  constructor(params) {
+    super(params);
+    this.post = params.post;
+    this.type = 'teacher';
+  }
+
+}
+
+
+class PersonFactory {
+    createStudent(params) {
+        return new Student(params);
+    }
+    createTeacher(params) {
+        return new Teacher(params);
+    }
+    createPerson(params) {
+        return new Person(params);
+    }
+
+}
+
+
+class SchoolList {
+    constructor() {
+      this.list = [];
+    }
+    add(person) {
+      this.list.push(person);
+    }
+}
+
+
+class School {
+    constructor(personFactory) {
+      this.school = new SchoolList();
+      this.personFactory = personFactory;
+    }
+
+    enroll(person) {
+      switch(person.type) {
+        case 'student':
+          let student = this.personFactory.createStudent(person);
+          this.school.add(student);
+          return student;
+          break;
+
+        case 'teacher':
+          let teacher = this.personFactory.createTeacher(person);
+          this.school.add(teacher);
+          return teacher;
+          break;
+
+        default:
+          break;
+      }
+    }
+
+//     dismiss(name) {...}
+//     promote(name) {...}
+    
+}
+
+
+const personArr = [
    {
        fullName: 'Иван Иванов',
+       type: 'student',
        university: 'УГАТУ',
        course: 2,
        birthDate: new Date(2000, 0, 1),
-       photoUrl: '/image/ava01.jpg'
+       photoUrl: '/image/ava01.jpg',
    },
    {
        fullName: 'Маша Иванова',
+       type: 'student',
        university: 'БФУ',
        course: 1,
        birthDate: new Date(2001, 1, 2),
-       photoUrl: '/image/ava02.jpg'
+       photoUrl: '/image/ava02.jpg',
    },
    {
        fullName: 'Дарья Петрова',
+       type: 'student',
        university: 'УГАТУ',
        course: 3,
        birthDate: new Date(1999, 3, 4),
-       photoUrl: '/image/ava03.jpg'
+       photoUrl: '/image/ava03.jpg',
    },
    {
        fullName: 'Виктор Васин',
+       type: 'student',
        university: 'БФУ',
        course: 3,
        birthDate: new Date(1999, 4, 5),
-       photoUrl: '/image/ava04.jpg'
+       photoUrl: '/image/ava04.jpg',
    },
    {
        fullName: 'Мария Фёдорова',
+       type: 'student',
        university: 'УГАТУ',
        course: 2,
        birthDate: new Date(2000, 5, 6),
-       photoUrl: '/image/ava05.jpg'
+       photoUrl: '/image/ava05.jpg',
    },
    {
        fullName: 'Дима Сергеев',
+       type: 'student',
        university: 'БФУ',
        course: 1,
        birthDate: new Date(2001, 6, 7),
-       photoUrl: '/image/ava06.jpg'
+       photoUrl: '/image/ava06.jpg',
+   },
+   {
+       fullName: 'Михаил Богатырёв',
+       type: 'teacher',
+       post: 'Преподаватель',
+       university: 'УГАТУ',
+       birthDate: new Date(2000, 0, 1),
+       photoUrl: '/image/ava01.jpg',
+   },
+   {
+       fullName: 'Юрий Таранов',
+       type: 'teacher',
+       post: 'Преподаватель',
+       university: 'БФУ',
+       birthDate: new Date(2001, 1, 2),
+       photoUrl: '/image/ava04.jpg',
    }
 
 ];
 
 
 window.onload = function() {
-  studentArr.forEach((item) => {
-      const student = new Student(item);
-      student.appendToDOM();
+  const personFactory = new PersonFactory();
+  const school = new School(personFactory);
+
+  personArr.forEach((item) => {
+      const person = school.enroll(item);
+      person.appendToDOM();
   });
+
+  // teacherArr.forEach((item) => {
+  //     const teacher = personFactory.createTeacher(item);
+  //     teacher.appendToDOM();
+  // });
 
 };
