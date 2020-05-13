@@ -28,7 +28,7 @@ class Person {
 
   appendPersonBlock = () => {
     let div = document.createElement("div");
-    div.classList.add("student");
+    div.classList.add("person");
     let img = document.createElement("img");
     img.setAttribute("src", this.photoUrl);
     img.setAttribute("alt", this.fullName);
@@ -53,7 +53,7 @@ class Person {
         break;
     }
     div.appendChild(span);
-    document.getElementById("students").appendChild(div);
+    document.getElementById("persons").appendChild(div);
     return div;
   }
 
@@ -143,7 +143,7 @@ class Student extends Person {
   constructor(params) {
     super(params);
     this.course = params.course;
-    this.type = 'student';
+    this.type = params.type;
   }
 
 }
@@ -154,7 +154,7 @@ class Teacher extends Person {
   constructor(params) {
     super(params);
     this.post = params.post;
-    this.type = 'teacher';
+    this.type = params.type;
   }
 
 }
@@ -217,7 +217,10 @@ class School {
     dismiss(fullName) {
       this.schoolList.del(fullName);
     }
-//     promote(name) {...}
+
+    getPerson(fullName) {
+      return this.schoolList.list.find(person => person.fullName === fullName);
+    }
     
 }
 
@@ -299,6 +302,5 @@ window.onload = function() {
       const person = school.enroll(item);
       person.appendToDOM();
   });
-
 
 };
