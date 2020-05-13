@@ -178,15 +178,20 @@ class SchoolList {
     constructor() {
       this.list = [];
     }
+
     add(person) {
       this.list.push(person);
     }
+
+    del(fullName) {
+      this.list = this.list.filter(person => person.fullName !== fullName);
+    }
 }
 
 
 class School {
     constructor(personFactory) {
-      this.school = new SchoolList();
+      this.schoolList = new SchoolList();
       this.personFactory = personFactory;
     }
 
@@ -194,13 +199,13 @@ class School {
       switch(person.type) {
         case 'student':
           let student = this.personFactory.createStudent(person);
-          this.school.add(student);
+          this.schoolList.add(student);
           return student;
           break;
 
         case 'teacher':
           let teacher = this.personFactory.createTeacher(person);
-          this.school.add(teacher);
+          this.schoolList.add(teacher);
           return teacher;
           break;
 
@@ -209,7 +214,9 @@ class School {
       }
     }
 
-//     dismiss(name) {...}
+    dismiss(fullName) {
+      this.schoolList.del(fullName);
+    }
 //     promote(name) {...}
     
 }
@@ -292,6 +299,14 @@ window.onload = function() {
       const person = school.enroll(item);
       person.appendToDOM();
   });
+  console.log(school.schoolList.list);
+
+  personArr.forEach((item) => {
+    if (item.type === 'teacher') {
+      school.dismiss(item.fullName);
+    }
+  });
+  console.log(school.schoolList.list);
 
   // teacherArr.forEach((item) => {
   //     const teacher = personFactory.createTeacher(item);
