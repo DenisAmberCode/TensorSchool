@@ -5,7 +5,6 @@ class Person {
     this.fullName = params.fullName;
     this.birthDate = params.birthDate;
     this.photoUrl = params.photoUrl;
-    this.university = params.university;
   }
 
   get birthDateStr() {
@@ -19,7 +18,7 @@ class Person {
     let diffDate = Math.ceil( Math.abs(new Date().getTime() - this.birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365));
     if (diffDate % 10 == 1 && diffDate != 11) {
       return diffDate.toString().concat(" ", "год");
-    } else if ([2, 3, 4].includes(diffDate % 10) && [12, 13, 14].includes(diffDate % 10) == false) {
+    } else if ([2, 3, 4].includes(diffDate % 10) && ![12, 13, 14].includes(diffDate % 10)) {
       return diffDate.toString().concat(" ", "года");
     } else {
       return diffDate.toString().concat(" ", "лет");
@@ -37,22 +36,7 @@ class Person {
     p.setAttribute("title", this.fullName);
     p.appendChild(document.createTextNode(this.fullName));
     div.appendChild(p);
-    let span = document.createElement("span");
-    switch(this.type) {
-      case 'student':
-        span.setAttribute("title", this.university.concat(" ", this.course));
-        span.appendChild(document.createTextNode(this.university.concat(" ", this.course)));
-        break;
-
-      case 'teacher':
-        span.setAttribute("title", this.post);
-        span.appendChild(document.createTextNode(this.post));
-        break;
-
-      default:
-        break;
-    }
-    div.appendChild(span);
+    div.appendChild(this.getLastStringInCard());
     document.getElementById("persons").appendChild(div);
     return div;
   }
@@ -78,28 +62,8 @@ class Person {
     p1.appendChild(document.createTextNode(this.birthDateStr.concat(", ", this.age)));
     divDesc.appendChild(p1);
 
-    let span2 = document.createElement("span");
-    let p2 = document.createElement("p");
-    switch(this.type) {
-      case 'student':
-        span2.setAttribute("title", "Учится");
-        span2.appendChild(document.createTextNode("Учится"));
-        p2.setAttribute("title", this.university.concat(", ", this.course, " курс"));
-        p2.appendChild(document.createTextNode(this.university.concat(", ", this.course, " курс")));
-        break;
-
-      case 'teacher':
-        span2.setAttribute("title", "Преподаёт");
-        span2.appendChild(document.createTextNode("Преподаёт"));
-        p2.setAttribute("title", this.university);
-        p2.appendChild(document.createTextNode(this.university));
-        break;
-
-      default:
-        break;
-    }
-    divDesc.appendChild(span2);
-    divDesc.appendChild(p2);
+    divDesc.appendChild(this.getPostInExtendedCard());
+    divDesc.appendChild(this.getLastStringInExtendedCard());
 
     div.appendChild(divDesc);
 
@@ -142,9 +106,32 @@ class Student extends Person {
 
   constructor(params) {
     super(params);
+    this.university = params.university;
     this.course = params.course;
     this.type = params.type;
   }
+
+  getLastStringInCard = () => {
+    let span = document.createElement("span");
+    span.setAttribute("title", this.university.concat(" ", this.course));
+    span.appendChild(document.createTextNode(this.university.concat(" ", this.course)));
+    return span;
+  }
+
+  getPostInExtendedCard = () => {
+    let span = document.createElement("span");
+    span.setAttribute("title", "Учится");
+    span.appendChild(document.createTextNode("Учится"));
+    return span;
+  }
+
+  getLastStringInExtendedCard = () => {
+    let p = document.createElement("p");
+    p.setAttribute("title", this.university.concat(", ", this.course, " курс"));
+    p.appendChild(document.createTextNode(this.university.concat(", ", this.course, " курс")));
+    return p;
+  }
+
 
 }
 
@@ -153,9 +140,32 @@ class Teacher extends Person {
 
   constructor(params) {
     super(params);
+    this.university = params.university;
     this.post = params.post;
     this.type = params.type;
   }
+
+  getLastStringInCard = () => {
+    let span = document.createElement("span");
+    span.setAttribute("title", this.post);
+    span.appendChild(document.createTextNode(this.post));
+    return span;
+  }
+
+  getPostInExtendedCard = () => {
+    let span = document.createElement("span");
+    span.setAttribute("title", "Преподаёт");
+    span.appendChild(document.createTextNode("Преподаёт"));
+    return span;
+  }
+
+  getLastStringInExtendedCard = () => {
+    let p = document.createElement("p");
+    p.setAttribute("title", this.university);
+    p.appendChild(document.createTextNode(this.university));
+    return p;
+  }
+
 
 }
 
