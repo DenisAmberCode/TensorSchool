@@ -1,5 +1,5 @@
-import {Student, Teacher, Person, PersonFactory} from './personLib.js';
-import {School, SchoolList} from './school.js';
+import {PersonFactory} from './personLib.js';
+import {School} from './school.js';
 
 // проинициализируем фабрику
 // const factory = new Factory();
