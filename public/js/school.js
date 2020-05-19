@@ -14,28 +14,12 @@ export class SchoolList {
 
 
 export class School {
-    constructor(personFactory) {
+    constructor() {
       this.schoolList = new SchoolList();
-      this.personFactory = personFactory;
     }
 
     enroll(person) {
-      switch(person.type) {
-        case 'student':
-          let student = this.personFactory.createStudent(person);
-          this.schoolList.add(student);
-          return student;
-          break;
-
-        case 'teacher':
-          let teacher = this.personFactory.createTeacher(person);
-          this.schoolList.add(teacher);
-          return teacher;
-          break;
-
-        default:
-          break;
-      }
+      this.schoolList.add(person);
     }
 
     dismiss(fullName) {
@@ -44,6 +28,12 @@ export class School {
 
     getPerson(fullName) {
       return this.schoolList.list.find(person => person.fullName === fullName);
+    }
+
+    appendToDOM = () => {
+      this.schoolList.list.forEach((person) => {
+        person.appendToDOM();
+      });
     }
     
 }

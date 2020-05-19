@@ -1,27 +1,6 @@
 import {PersonFactory} from './personLib.js';
 import {School} from './school.js';
 
-// проинициализируем фабрику
-// const factory = new Factory();
-
-// создадим школу (если есть для нее фабрика, то тоже через фабрику) 
-// let school = new School();
-
-// добавим в список школы студентов используйте те данные, которые у вас есть
-// Vasia и пр. тут скорее для примера
-// если методы называются по другому, поменяйте
-// по желанию можно добавить больше
-// school.add( factory.createStudent({ name: 'Vasia' }) );
-// school.add( factory.createStudent({ name: 'Petia' }) );
-// school.add( factory.createTeacher({ name: 'Misha' }) );
-
-// отрисуем всех студентов в dom 
-// если методы называются по другому, поменяйте
-// точка монтирования document.body может быть изменена на любой другой элемент DOM
-// school.appendToDom(document.body);
-
-// в итоге в на странице должны получить список студентов и учителей
-// папка js будет содержать несколько файлов, минимум 3, а лучше больше
 const personArr = [
    {
        fullName: 'Иван Иванов',
@@ -92,9 +71,23 @@ const personArr = [
 
 
 const personFactory = new PersonFactory();
-const school = new School(personFactory);
+const school = new School();
 
 personArr.forEach((item) => {
-  const person = school.enroll(item);
-  person.appendToDOM();
+	let person;
+	switch(item.type) {
+		case 'student':
+			person = personFactory.createStudent(item);
+			break;
+		case 'teacher':
+			person = personFactory.createTeacher(item);
+			break;
+		default:
+			person = personFactory.createPerson(item);
+			break;
+	}
+	school.enroll(person);
 });
+
+school.appendToDOM();
+

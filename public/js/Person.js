@@ -25,6 +25,18 @@ export class Person {
     }
   }
 
+  getLastStringInCard = () => {
+    return undefined;
+  }
+
+  getPostInExtendedCard = () => {
+    return undefined;
+  }
+
+  getLastStringInExtendedCard = () => {
+    return undefined;
+  }
+
   appendPersonBlock = () => {
     let div = document.createElement("div");
     div.classList.add("person");
@@ -36,7 +48,9 @@ export class Person {
     p.setAttribute("title", this.fullName);
     p.appendChild(document.createTextNode(this.fullName));
     div.appendChild(p);
-    div.appendChild(this.getLastStringInCard());
+    if (this.getLastStringInCard()) {
+      div.appendChild(this.getLastStringInCard());
+    }
     document.getElementById("persons").appendChild(div);
     return div;
   }
@@ -62,8 +76,13 @@ export class Person {
     p1.appendChild(document.createTextNode(this.birthDateStr.concat(", ", this.age)));
     divDesc.appendChild(p1);
 
-    divDesc.appendChild(this.getPostInExtendedCard());
-    divDesc.appendChild(this.getLastStringInExtendedCard());
+    if (this.getPostInExtendedCard()) {
+      divDesc.appendChild(this.getPostInExtendedCard());  
+    }
+    if (this.getLastStringInExtendedCard()) {
+      divDesc.appendChild(this.getLastStringInExtendedCard());   
+    }
+
 
     div.appendChild(divDesc);
 
