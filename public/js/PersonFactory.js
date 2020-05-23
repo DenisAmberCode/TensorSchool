@@ -1,4 +1,7 @@
 import {Student, Teacher, Person} from './personLib.js';
+
+'use strict';
+
 export class PersonFactory {
     createStudent(params) {
         return new Student(params);

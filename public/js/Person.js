@@ -1,6 +1,12 @@
-export class Person {
+import {Component, Popup} from './personLib.js';
+import {popupList} from './app.js'
+
+'use strict';
+
+export class Person extends Component{
 
   constructor(params) {
+    super(params);
     this.type = 'Person';
     this.fullName = params.fullName;
     this.birthDate = params.birthDate;
@@ -37,7 +43,7 @@ export class Person {
     return undefined;
   }
 
-  appendPersonBlock = () => {
+  getPersonBlock = () => {
     let div = document.createElement("div");
     div.classList.add("person");
     let img = document.createElement("img");
@@ -51,7 +57,6 @@ export class Person {
     if (this.getLastStringInCard()) {
       div.appendChild(this.getLastStringInCard());
     }
-    document.getElementById("persons").appendChild(div);
     return div;
   }
 
@@ -105,18 +110,23 @@ export class Person {
   }
 
   render = () => {
-    return this.appendPersonBlock();
+    return this.getPersonBlock();
   }
 
-  appendToDOM = () => {
-    const layout = this.render();
-    layout.addEventListener('click', (event) => {
-      if (document.getElementById("times") == null) {
-        this.openCard(event.currentTarget);
-      } else {
-          document.getElementsByClassName('card')[0].remove();
+  afterMount() {
+    this.container.addEventListener('click', (event) => {this.onClick(event)});
+  }
+
+  onClick(event) {
+    if (!event.currentTarget.getElementsByClassName('card').length) {
+      if (popupList.popups) {
+        popupList.clear();
       }
-    });
+      this.popup = new Popup(this);
+      popupList.popups.push(this.popup);
+      this.popup.mount(this.container, 'afterBegin');
+    }
+
   }
 
   

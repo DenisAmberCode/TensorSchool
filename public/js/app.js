@@ -1,5 +1,6 @@
-import {PersonFactory} from './personLib.js';
-import {School} from './school.js';
+import {School, Student, Teacher, Person, PopupList} from './personLib.js'
+
+'use strict';
 
 const personArr = [
    {
@@ -70,24 +71,32 @@ const personArr = [
 ];
 
 
-const personFactory = new PersonFactory();
-const school = new School();
+class ComponentFactory {
+  create(component, params) {
+    return new component(params || {});
+  }
+}
+
+
+
+const componentFactory = new ComponentFactory();
+const school = componentFactory.create(School);
+export const popupList = componentFactory.create(PopupList);
 
 personArr.forEach((item) => {
 	let person;
 	switch(item.type) {
 		case 'student':
-			person = personFactory.createStudent(item);
+			person = componentFactory.create(Student, item);
 			break;
 		case 'teacher':
-			person = personFactory.createTeacher(item);
+			person = componentFactory.create(Teacher, item);
 			break;
 		default:
-			person = personFactory.createPerson(item);
+			person = componentFactory.create(Person, item);
 			break;
 	}
 	school.enroll(person);
 });
 
 school.appendToDOM();
-

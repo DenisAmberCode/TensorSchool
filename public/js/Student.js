@@ -1,4 +1,7 @@
 import {Person} from './personLib.js'
+
+'use strict';
+
 export class Student extends Person {
 
   constructor(params) {
