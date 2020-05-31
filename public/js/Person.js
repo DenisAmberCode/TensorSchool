@@ -1,5 +1,5 @@
-import {Component, Popup} from './personLib.js';
-import {popupList} from './app.js'
+import {Component, Popup,} from './personLib.js';
+import {popupList, dataSet} from './app.js'
 
 'use strict';
 
@@ -7,10 +7,11 @@ export class Person extends Component{
 
   constructor(params) {
     super(params);
+    this.id = params.id;
     this.type = 'Person';
     this.fullName = params.fullName;
-    this.birthDate = params.birthDate;
-    this.photoUrl = params.photoUrl;
+    this.birthDate = new Date(params.birthDate);
+    this.photoUrl = params.photoUrl || "/image/anonymous.jpg";
   }
 
   get birthDateStr() {
@@ -21,7 +22,7 @@ export class Person extends Component{
   }
 
   get age() {
-    let diffDate = Math.ceil( Math.abs(new Date().getTime() - this.birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365));
+    let diffDate = Math.round( Math.abs(new Date().getTime() - this.birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365));
     if (diffDate % 10 == 1 && diffDate != 11) {
       return diffDate.toString().concat(" ", "год");
     } else if ([2, 3, 4].includes(diffDate % 10) && ![12, 13, 14].includes(diffDate % 10)) {
@@ -32,15 +33,15 @@ export class Person extends Component{
   }
 
   getLastStringInCard = () => {
-    return undefined;
+    return;
   }
 
   getPostInExtendedCard = () => {
-    return undefined;
+    return;
   }
 
   getLastStringInExtendedCard = () => {
-    return undefined;
+    return;
   }
 
   getPersonBlock = () => {
@@ -57,56 +58,21 @@ export class Person extends Component{
     if (this.getLastStringInCard()) {
       div.appendChild(this.getLastStringInCard());
     }
+    let btnDiv = document.createElement("div");
+    let btn1 = document.createElement("input");
+    btn1.setAttribute("class", "btn btnDel");
+    btn1.setAttribute("type", "submit");
+    btn1.setAttribute("name", "buttonDel");
+    btn1.setAttribute("value", "Удалить");
+    btnDiv.appendChild(btn1);
+    let btn2 = document.createElement("input");
+    btn2.setAttribute("class", "btn btnUpdate");
+    btn2.setAttribute("type", "submit");
+    btn2.setAttribute("name", "buttonUpdate");
+    btn2.setAttribute("value", "Обновить");
+    btnDiv.appendChild(btn2);
+    div.appendChild(btnDiv)
     return div;
-  }
-
-  openCard = (currentTarget) => {
-    let div = document.createElement("div");
-    div.classList.add("card");
-
-    let divDesc = document.createElement("div");
-    divDesc.classList.add("card__description");
-
-    let h3 = document.createElement("h3");
-    h3.appendChild(document.createTextNode(this.fullName));
-    divDesc.appendChild(h3);
-
-    let span1 = document.createElement("span");
-    span1.setAttribute("title", "День рождения");
-    span1.appendChild(document.createTextNode("День рождения"));
-    divDesc.appendChild(span1);
-
-    let p1 = document.createElement("p");
-    p1.setAttribute("title", this.birthDateStr.concat(", ", this.age));
-    p1.appendChild(document.createTextNode(this.birthDateStr.concat(", ", this.age)));
-    divDesc.appendChild(p1);
-
-    if (this.getPostInExtendedCard()) {
-      divDesc.appendChild(this.getPostInExtendedCard());  
-    }
-    if (this.getLastStringInExtendedCard()) {
-      divDesc.appendChild(this.getLastStringInExtendedCard());   
-    }
-
-
-    div.appendChild(divDesc);
-
-    let divImg = document.createElement("div");
-    divImg.classList.add("card__image");
-
-    let divTimes = document.createElement("div");
-    divTimes.setAttribute("id", "times");
-    divTimes.setAttribute("class", "card__image_times");
-    divTimes.innerHTML = "&times";
-    divImg.appendChild(divTimes);
-
-    let img = document.createElement("img");
-    img.setAttribute("src", this.photoUrl);
-    divImg.appendChild(img);
-
-    div.appendChild(divImg);
-
-    currentTarget.insertBefore(div, currentTarget.firstChild)
   }
 
   render = () => {
@@ -115,18 +81,26 @@ export class Person extends Component{
 
   afterMount() {
     this.container.addEventListener('click', (event) => {this.onClick(event)});
+    (this.container.getElementsByClassName('btnDel')[0]).addEventListener('click', (event) => {
+      dataSet.beforeDelete();
+      dataSet.delete(this.id);
+      dataSet.afterDelete();
+      event.stopPropagation();
+    });
+    (this.container.getElementsByClassName('btnUpdate')[0]).addEventListener('click', (event) => {this.onClick(event)});
+
   }
+
 
   onClick(event) {
     if (!event.currentTarget.getElementsByClassName('card').length) {
       if (popupList.popups) {
         popupList.clear();
       }
-      this.popup = new Popup(this);
+      this.popup = new Popup({person: this, event: event});
       popupList.popups.push(this.popup);
       this.popup.mount(this.container, 'afterBegin');
     }
-
   }
 
   

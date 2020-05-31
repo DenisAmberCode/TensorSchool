@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="/css/style.css">
     </head>
     <body>
-      	<div id="wrapper">
+        <div id="wrapper">
             <header>
               <div>
                 <img src="/image/logo.jpg" alt="Логотип компании тензор">
@@ -17,8 +17,45 @@
                 </p>
               </div>
             </header>
-	        <div id="persons">
+
+	        <div id="persons" class="persons">
 	        </div>
-	    <div>
+
+            <div>
+                <a href="#" id="prevButton" class="view__button">&#8249;</a>
+                <a href="#" id="nextButton" class="view__button">&#8250;</a>
+            </div>
+
+            <hr>
+            <form id="formElem">
+                <h2>Добавить новую персону</h2>
+                <fieldset class="form__info">
+                    <label>
+                      Введите ваше имя и фамилию
+                      <input type="text" name="fullName" required placeholder="Иван Иванов">
+                    </label>
+                    <label>
+                        Выберите вашу должность
+                        <select class="" name="type" required>
+                            <option value="student">Студент</option>
+                            <option value="teacher">Преподаватель</option>
+                            <option value="person">Персона</option>
+                        </select>
+                    </label>
+                    <label>
+                      Введите ваш университет
+                      <input type="text" name="university" required placeholder="University">
+                    </label>
+                    <label>
+                      Ваш День рождения (ГГГГ-ММ-ДД)
+                      <input type="text" name="birthDate" required pattern="^([0-9]{4})-([0-9]{2})-([0-9]{2})$" placeholder="1998-01-15">
+                    </label>                   
+                </fieldset>
+                <fieldset class="form__button">
+                    <input class="btn" type="submit" name="submit" value="Добавить">
+                </fieldset>
+            </form>
+        </div>
+        <footer class="footer"><hr>TensorSchool Team</footer>
     </body>
 </html>

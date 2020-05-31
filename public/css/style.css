@@ -31,6 +31,10 @@ header span:after {
 	margin: 20px auto;
 }
 
+.persons {
+	height: 330px;
+}
+
 .person {
 	width: 30%;
 	display: inline-block;
@@ -54,6 +58,14 @@ header span:after {
 	margin: 0.5em 0;
 }
 
+.btnDel{
+	margin: 10px 10% 10px 0;
+}
+
+.btnUpdate{
+	margin: 10px 0;
+}
+
 
 #wrapper {
 	width: 900px;
@@ -61,12 +73,24 @@ header span:after {
 	margin: 0 auto;
 }
 
+.card__form {
+	height: 505px;
+	margin: 0 0 -430px -15px;
+}
+
+.card__popupInfo {
+	height: 200px;
+	margin: 0 0 -200px -15px;
+}
+
+.card__form_inputPerson {
+	height: 430px;
+}
+
 .card {
 	background: #F3F3F3;
 	width: 300px;
-	height: 200px;
-	position: relative;
-	margin: 0 0 -200px -15px;
+	position: absolute;
 	border-radius: 10px;
 	color: #464646;
 	box-shadow: 0 0 10px rgba(0,0,0,0.5);
@@ -86,11 +110,14 @@ header span:after {
 }
 
 .card__image_times {
-	margin: 0 0 30px 80px;
+	font-size: 18px;
+    font-family: Tahoma, Geneva, Verdana, sans-serif;
+	position: absolute;
+	right: 5px;
 }
 
 .card__description {
-	padding-top: 20px;
+	padding-top: 10px;
 	width: 60%;
 	display: inline-block;
 }
@@ -107,4 +134,109 @@ header span:after {
 	font-size: 13px;
 	line-height: 14px;
 	margin: 0;
+}
+
+
+.view__button {
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 50%;
+  color: black;
+  background-color: #f1f1f1;
+}
+
+.view__button:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/*Форма добавления персоны*/
+form {
+  margin: 50px auto;
+  border: 1px solid #c6c7cc;
+  border-radius: 5px;
+  font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  overflow: hidden;
+  width: 400px;
+}
+
+form h2 {
+  color: #395870;
+  background: #f0f0f2;
+  border-bottom: 1px solid #c6c7cc;
+  font-weight: bold;
+  margin: 0;
+  padding: 20px;
+
+}
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+input {
+  border-radius: 5px;
+  font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  margin: 0;
+}
+
+.form__info {
+  padding: 20px 20px 0 20px;
+}
+
+.form__info label {
+  color: #395870;
+  display: block;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.form__info input{
+  background: #fff;
+  border: 1px solid #c6c7cc;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .1);
+  color: #636466;
+  padding: 6px;
+  margin-top: 6px;
+  width: 96%;
+}
+
+.form__info select{
+  background: #fff;
+  border: 1px solid #c6c7cc;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .1);
+  color: #636466;
+  padding: 6px;
+  margin-top: 6px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.form__button {
+  background: #f0f0f2;
+  border-top: 1px solid #c6c7cc;
+  padding: 20px;
+}
+
+.form__button label {
+  color: #7c7c80;
+  font-size: 12px;
+  float: left;
+  margin: 10px 0 0 20px;
+}
+
+.btn {
+  background: linear-gradient(#49708f, #293f50);
+  border: 0;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 8px 16px;
+}
+
+.footer {
+	margin: 90px 0 20px 0;
 }

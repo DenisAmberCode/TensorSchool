@@ -1,0 +1,91 @@
+{
+  "countPersons": [
+    {
+      "countPersons": 9,
+      "id": 1
+    }
+  ],
+  "person": [
+    {
+      "id": 1,
+      "fullName": "Иван Иванов",
+      "type": "student",
+      "university": "БФУ",
+      "course": "4",
+      "birthDate": "1998-01-10",
+      "photoUrl": "/image/ava01.jpg"
+    },
+    {
+      "id": 2,
+      "fullName": "Маша Иванова",
+      "type": "student",
+      "university": "БФУ",
+      "course": "1",
+      "birthDate": "2001-03-02T00:00:00.000Z",
+      "photoUrl": "/image/ava02.jpg"
+    },
+    {
+      "id": 3,
+      "fullName": "Дарья Петрова",
+      "type": "student",
+      "university": "УГАТУ",
+      "course": "3",
+      "birthDate": "1999-04-04T00:00:00.000Z",
+      "photoUrl": "/image/ava03.jpg"
+    },
+    {
+      "id": 4,
+      "fullName": "Виктор Васин",
+      "type": "student",
+      "university": "БФУ",
+      "course": "3",
+      "birthDate": "1999-05-05T00:00:00.000Z",
+      "photoUrl": "/image/ava04.jpg"
+    },
+    {
+      "id": 5,
+      "fullName": "Мария Фёдорова",
+      "type": "student",
+      "university": "УГАТУ",
+      "course": "2",
+      "birthDate": "2000-07-05T00:00:00.000Z",
+      "photoUrl": "/image/ava05.jpg"
+    },
+    {
+      "id": 6,
+      "fullName": "Дима Сергеев",
+      "type": "student",
+      "university": "БФУ",
+      "course": "1",
+      "birthDate": "2001-07-07T00:00:00.000Z",
+      "photoUrl": "/image/ava06.jpg"
+    },
+    {
+      "id": 7,
+      "fullName": "Михаил Богатырёв",
+      "type": "teacher",
+      "post": "Преподаватель",
+      "university": "УГАТУ",
+      "birthDate": "2000-01-01T00:00:00.000Z",
+      "photoUrl": "/image/ava01.jpg"
+    },
+    {
+      "id": 8,
+      "fullName": "Юрий Таранов",
+      "type": "teacher",
+      "post": "Преподаватель",
+      "university": "БФУ",
+      "birthDate": "2001-02-02T00:00:00.000Z",
+      "photoUrl": "/image/ava04.jpg"
+    },
+    {
+      "fullName": "Денис Гладкий",
+      "type": "student",
+      "university": "БФУ",
+      "birthDate": "1998-01-15",
+      "course": "1",
+      "photoUrl": "/image/anonymous.jpg",
+      "id": 9
+    }
+  ]
+}

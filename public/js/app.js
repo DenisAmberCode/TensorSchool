@@ -1,74 +1,6 @@
-import {School, Student, Teacher, Person, PopupList} from './personLib.js'
+import {School, Student, Teacher, Person, PopupList, PersonFactory, DataSet} from './personLib.js'
 
 'use strict';
-
-const personArr = [
-   {
-       fullName: 'Иван Иванов',
-       type: 'student',
-       university: 'УГАТУ',
-       course: 2,
-       birthDate: new Date(2000, 0, 1),
-       photoUrl: '/image/ava01.jpg',
-   },
-   {
-       fullName: 'Маша Иванова',
-       type: 'student',
-       university: 'БФУ',
-       course: 1,
-       birthDate: new Date(2001, 1, 2),
-       photoUrl: '/image/ava02.jpg',
-   },
-   {
-       fullName: 'Дарья Петрова',
-       type: 'student',
-       university: 'УГАТУ',
-       course: 3,
-       birthDate: new Date(1999, 3, 4),
-       photoUrl: '/image/ava03.jpg',
-   },
-   {
-       fullName: 'Виктор Васин',
-       type: 'student',
-       university: 'БФУ',
-       course: 3,
-       birthDate: new Date(1999, 4, 5),
-       photoUrl: '/image/ava04.jpg',
-   },
-   {
-       fullName: 'Мария Фёдорова',
-       type: 'student',
-       university: 'УГАТУ',
-       course: 2,
-       birthDate: new Date(2000, 5, 6),
-       photoUrl: '/image/ava05.jpg',
-   },
-   {
-       fullName: 'Дима Сергеев',
-       type: 'student',
-       university: 'БФУ',
-       course: 1,
-       birthDate: new Date(2001, 6, 7),
-       photoUrl: '/image/ava06.jpg',
-   },
-   {
-       fullName: 'Михаил Богатырёв',
-       type: 'teacher',
-       post: 'Преподаватель',
-       university: 'УГАТУ',
-       birthDate: new Date(2000, 0, 1),
-       photoUrl: '/image/ava01.jpg',
-   },
-   {
-       fullName: 'Юрий Таранов',
-       type: 'teacher',
-       post: 'Преподаватель',
-       university: 'БФУ',
-       birthDate: new Date(2001, 1, 2),
-       photoUrl: '/image/ava04.jpg',
-   }
-
-];
 
 
 class ComponentFactory {
@@ -78,25 +10,125 @@ class ComponentFactory {
 }
 
 
+class Model {
+  constructor(data) {
+    for(let key in data) {
+      this[key] = data[key];
+    }
+  }
+}
+
+
+// Отображение карточек персон
+class ViewPerson {
+  render(page, limit) {
+    let personArr = dataSet.getList((page + 1), limit);
+    personArr.then(arr => {
+      arr.forEach((item) => {
+          let person;
+          switch(item.type) {
+            case 'student':
+              person = componentFactory.create(Student, item);
+              break;
+            case 'teacher':
+              person = componentFactory.create(Teacher, item);
+              break;
+            default:
+              person = componentFactory.create(Person, item);
+              break;
+          }
+          school.enroll(person);  
+      });
+      school.appendToDOM();
+    });
+  }
+
+}
+
+
+class PageInfo {
+  constructor(params) {
+    this.currentPage = 0;         // Текущая отображаемая страница
+    this.currentLimit = 3;        // Лимит отображения карточек
+    this.countPersons = 0;        // Количество персон (до запроса на сервер)
+    this.countPages = 0;          // Количество страниц (до запроса на сервер)
+  }
+
+}
+
 
 const componentFactory = new ComponentFactory();
-const school = componentFactory.create(School);
+export const personFactory = new PersonFactory();
+export const school = componentFactory.create(School);
 export const popupList = componentFactory.create(PopupList);
+export const dataSet = new DataSet({
+  model: Model,
+  object: 'person'
+});
+export const viewPerson = new ViewPerson();
+export const pageInfo = new PageInfo();
 
-personArr.forEach((item) => {
-	let person;
-	switch(item.type) {
-		case 'student':
-			person = componentFactory.create(Student, item);
-			break;
-		case 'teacher':
-			person = componentFactory.create(Teacher, item);
-			break;
-		default:
-			person = componentFactory.create(Person, item);
-			break;
-	}
-	school.enroll(person);
+
+viewPerson.render(pageInfo.currentPage, pageInfo.currentLimit);  // Рендерим первую страницу с персонами
+
+dataSet.query('countPersons/1').then(result => {   // Загружаем количество персон из db.json
+
+pageInfo.countPersons = result["countPersons"];  // Количество персон из db.json
+pageInfo.countPages = Math.ceil(pageInfo.countPersons / pageInfo.currentLimit);  // Количество страниц
+
+// Pagination
+let buttons = document.getElementsByClassName('view__button');
+for (let i = 0; i < buttons.length; i++) {
+  buttons[i].addEventListener('click', (event) => {
+    document.getElementById('persons').innerHTML = "";
+    school.schoolList.list = [];
+    switch(event.target.getAttribute('id')) {
+      case 'prevButton':
+        pageInfo.currentPage = ((pageInfo.currentPage - 1 + pageInfo.countPages) % pageInfo.countPages);
+        viewPerson.render(pageInfo.currentPage, pageInfo.currentLimit);
+        break;
+      case 'nextButton':
+        pageInfo.currentPage = ((pageInfo.currentPage + 1) % pageInfo.countPages);
+        viewPerson.render(pageInfo.currentPage, pageInfo.currentLimit);
+        break;
+    }
+  });
+}
+
+
+// Submit creation form
+formElem.onsubmit = async (event) => {
+  event.preventDefault();
+  let formData = new FormData(formElem);
+  switch (formData.get('type')) {
+    case 'student':
+      formData.set("course", "1");
+      break;
+    case 'teacher':
+      formData.set("post", "Преподаватель");
+      break;
+    case 'person':
+      formData.delete('university');
+      break;
+  }
+  formData.set("photoUrl", "/image/anonymous.jpg");
+
+  let object = {};
+  formData.forEach((value, key) => {object[key] = value});
+  let jsonData = JSON.stringify(object);
+
+  result = await dataSet.create(jsonData);
+  dataSet.afterCreate(result);
+
+  pageInfo.countPersons += 1;
+  pageInfo.countPages = Math.ceil(pageInfo.countPersons / pageInfo.currentLimit);
+
+  dataSet.ChangeTheNumberOfPersons(pageInfo.countPersons);
+
+  formElem.reset();
+};
+
+
 });
 
-school.appendToDOM();
+

@@ -5,4 +5,5 @@ export {Person} from './Person.js';
 export {Student} from './Student.js';
 export {Teacher} from './Teacher.js';
 export {PopupList, Popup} from './Popup.js';
+export {DataSet} from './DataSet.js';
 

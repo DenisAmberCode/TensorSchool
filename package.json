@@ -1,14 +1,16 @@
 {
-  "name": "tensorschool",
-  "version": "20.05.14",
-  "description": "Tensor School",
-  "main": "index.js",
+  "name": "tensor_school_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
-  },
-  "devDependencies": {}
+    "express": "^4.17.1",
+    "json-server": "^0.12.1"
+  }
 }
