@@ -22,7 +22,13 @@ export class Person extends Component{
   }
 
   get age() {
-    let diffDate = Math.floor( Math.abs(new Date().getTime() - this.birthDate.getTime()) / (1000 * 60 * 60 * 24 * 365));
+    let birthDate = new Date(this.birthDate);
+    let now = new Date();
+    let diffDate = now.getFullYear() - birthDate.getFullYear();
+    birthDate.setFullYear(birthDate.getFullYear() + diffDate);
+    if (birthDate > now) {
+        diffDate -= 1;
+    }
     if (diffDate % 10 == 1 && diffDate != 11) {
       return diffDate.toString().concat(" ", "год");
     } else if ([2, 3, 4].includes(diffDate % 10) && ![12, 13, 14].includes(diffDate % 10)) {
