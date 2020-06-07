@@ -76,6 +76,12 @@ dataSet.query('countPersons/1').then(result => {   // Загружаем кол�
 pageInfo.countPersons = result["countPersons"];  // Количество персон из db.json
 pageInfo.countPages = Math.ceil(pageInfo.countPersons / pageInfo.currentLimit);  // Количество страниц
 
+if (pageInfo.countPersons == 0) {  // Если кол-во нет персон, то скрываем пагинацию и раздел persons
+	document.getElementById("pagination").hidden = true;
+	document.getElementById("persons").hidden = true;
+}
+
+
 // Pagination
 let buttons = document.getElementsByClassName('view__button');
 for (let i = 0; i < buttons.length; i++) {
