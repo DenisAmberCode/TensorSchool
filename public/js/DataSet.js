@@ -40,6 +40,7 @@ export class DataSet {
   }
 
   create(jsonData) {
+    let divPersons = document.getElementById('persons');
     return this.query(
         `${this.options.object}`,
         {
@@ -57,10 +58,12 @@ export class DataSet {
   afterCreate(personModel) {
     // Рендерим карточку, если есть место на странице (если карточек < 3)
     let divPersons = document.getElementById('persons');
-    if (divPersons.childNodes.length < 3) {
+    if (divPersons.children.length < 3) {
       let person = personFactory.create(personModel);
       person.mount(divPersons);
     }
+    document.getElementById("pagination").hidden = false;
+    document.getElementById("persons").hidden = false;
   }
 
   read(id) {
@@ -85,6 +88,7 @@ export class DataSet {
         body: jsonData
       }
     ).then(result => {
+      return result;
       let newPerson = personFactory.create(this.toModel(result));
       newPerson.mount(OldPerson.container, "beforebegin");
       OldPerson.unmount();
@@ -110,12 +114,17 @@ export class DataSet {
   afterDelete() {
     this.ChangeTheNumberOfPersons(pageInfo.countPersons);
     let divPersons = document.getElementById('persons');
-    if (divPersons.childNodes.length - 1 == 0) {  // После удалении последней карточки со страницы, запросить предыдущую страницу
+    if (divPersons.children.length - 1 == 0 && pageInfo.currentPage > 0) {  // После удалении последней карточки со страницы, запросить предыдущую страницу
       pageInfo.currentPage -= 1;
     };
     divPersons.innerHTML = "";
     school.schoolList.list = [];
-    viewPerson.render(pageInfo.currentPage, pageInfo.currentLimit);
+    if (pageInfo.countPersons > 0) {
+      viewPerson.render(pageInfo.currentPage, pageInfo.currentLimit);
+    } else {
+      document.getElementById("pagination").hidden = true;
+      document.getElementById("persons").hidden = true;
+    }  
   }
 
   ChangeTheNumberOfPersons(countPersons) {
