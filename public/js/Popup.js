@@ -1,4 +1,3 @@
-import {Component} from './personLib.js'
 import {popupList, dataSet} from './app.js'
 
 'use strict';
