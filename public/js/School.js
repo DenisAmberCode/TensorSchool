@@ -1,3 +1,5 @@
+import {Person, Student, Teacher} from './personLib.js'
+
 'use strict';
 
 export class SchoolList {
@@ -15,8 +17,10 @@ export class SchoolList {
 }
 
 
-export class School {
-    constructor() {
+export class School extends React.Component{
+    constructor(props) {
+      super(props);
+      this.persons = this.props.persons;
       this.schoolList = new SchoolList();
     }
 
@@ -32,10 +36,24 @@ export class School {
       return this.schoolList.list.find(person => person.fullName === fullName);
     }
 
-    appendToDOM = () => {
-      this.schoolList.list.forEach((person) => {
-        person.mount(document.getElementById("persons"));
+    render() {
+      this.persons.forEach((item) => {
+        let person;
+        switch(item.type) {
+          case 'student':
+            person = React.createElement(Student, {person: item, key: item.id});
+            break;
+          case 'teacher':
+            person = React.createElement(Teacher, {person: item, key: item.id});
+            break;
+          default:
+            person = React.createElement(Person, {person: item, key: item.id});
+            break;
+        }
+        this.enroll(person);
       });
+
+      return this.schoolList.list;
     }
     
 }

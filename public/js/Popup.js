@@ -9,21 +9,23 @@ export class PopupList {
   }
 
   clear() {
-    this.popups.forEach( p => {
-      p.unmount();
-    });
-    this.popups = [];
+    let popups = document.getElementsByClassName('person__popupCard')
+    for (let i=0; i<popups.length; i++) {
+      if (popups[i].innerHTML != "") {
+        ReactDOM.unmountComponentAtNode(popups[i]);
+      }
+    }
   }
 
 }
 
 
-export class Popup extends Component {
+export class Popup extends React.Component {
 
-  constructor({person, event}){
-    super({person, event});
-    this.person = person;
-    this.event = event;
+  constructor(props){
+    super(props);
+    this.person = props.person;
+    this.event = props.event;
   }
 
 //  Вёрстка Popup зависит от event: при клике на 'btnUpdate' формируется форма обновления, иначе формируется Popup с расширенной информацией
@@ -39,95 +41,74 @@ export class Popup extends Component {
   }
 
   renderPopupForm() {
-    let div = document.createElement("div");
-    let lastInput = '';
+    let lastInput = null;
     let classCard__form_inputPerson = '';
     switch (this.person.type) {
       case 'student':
-        lastInput = `<label>Укажите ваш курс<input type="number" min="1" name="course" required placeholder="Курс"></label>`;
+        lastInput = React.createElement('label', {},
+          "Укажите ваш курс",
+          React.createElement('input', {type: "number", min: "1", name: "course", required: true, placeholder: "Курс"})
+        );
         break;
       case 'teacher':
-        lastInput = `<label>Укажите вашу должность<input type="text" name="post" required placeholder="Преподаватель"></label>`;
+        lastInput = React.createElement('label', {},
+          "Укажите вашу должность",
+          React.createElement('input', {type: "text", name: "post", required: true, placeholder: "Преподаватель"})
+        );
         break;
       default:
         classCard__form_inputPerson = "card__form_inputPerson";
         break;
     }
     let patternDate = "^([0-9]{4})-([0-9]{2})-([0-9]{2})$";
-    div.innerHTML = `<form id="formUpdate" class="card card__form ${classCard__form_inputPerson}">
-                        <span id="times" class="card__image_times">&times</span>
-                        <h2>Обновление информации о персоне</h2>
-                        <fieldset class="form__info">
-                            <label>
-                              Новое имя и фамилия
-                              <input type="text" name="fullName" required placeholder="Иван Иванов">
-                            </label>
-                            <label>
-                              Ваш университет
-                              <input type="text" name="university" required placeholder="University">
-                            </label>
-                            <label>
-                              Ваш День рождения (ГГГГ-ММ-ДД)
-                              <input type="text" name="birthDate" required pattern=${patternDate} placeholder="1998-01-15">
-                            </label>
-                            ${lastInput}                   
-                        </fieldset>
-                        <fieldset class="form__button">
-                            <input class="btn" type="submit" name="submit" value="Обновить">
-                        </fieldset>
-                    </form>`;
-    return div;
+    let times = "\u00D7";  // крестик &times
+    return React.createElement('div', {},  
+            React.createElement('form', {id: "formUpdate", className: `card card__form ${classCard__form_inputPerson}`},
+              React.createElement('span', {id: "times", className: 'card__image_times'}, times),
+              React.createElement('h2', {}, "Обновление информации о персоне"),
+              React.createElement('fieldset', {className: 'form__info'},
+                React.createElement('label', {},
+                  "Новое имя и фамилия",
+                  React.createElement('input', {type: "text", name: "fullName", required: true, placeholder: "Иван Иванов"}),
+                ),
+                React.createElement('label', {},
+                  "Ваш университет",
+                  React.createElement('input', {type: "text", name: "university", required: true, placeholder: "University"}),
+                ),
+                React.createElement('label', {},
+                  "Ваш День рождения (ГГГГ-ММ-ДД)",
+                  React.createElement('input', {type: "text", name: "birthDate", required: true, pattern: patternDate, placeholder: "1998-01-15"}),
+                ),
+                lastInput
+              ),
+              React.createElement('fieldset', {className: 'form__button'},
+                React.createElement('input', {className: 'btn', type: "submit", name: "submit", value: "Обновить"})
+              )
+            )
+          );
   }
 
   renderPopupCard() {
-    let div = document.createElement("div");
-    div.classList.add("card", "card__popupInfo");
-
-    let divTimes = document.createElement("div");
-    divTimes.setAttribute("id", "times");
-    divTimes.setAttribute("class", "card__image_times");
-    divTimes.innerHTML = "&times";
-    div.appendChild(divTimes);
-
-    let divDesc = document.createElement("div");
-    divDesc.classList.add("card__description");
-
-    let h3 = document.createElement("h3");
-    h3.appendChild(document.createTextNode(this.person.fullName));
-    divDesc.appendChild(h3);
-
-    let span1 = document.createElement("span");
-    span1.setAttribute("title", "День рождения");
-    span1.appendChild(document.createTextNode("День рождения"));
-    divDesc.appendChild(span1);
-
-    let p1 = document.createElement("p");
-    p1.setAttribute("title", this.person.birthDateStr.concat(", ", this.person.age));
-    p1.appendChild(document.createTextNode(this.person.birthDateStr.concat(", ", this.person.age)));
-    divDesc.appendChild(p1);
-
-    if (this.person.getPostInExtendedCard()) {
-      divDesc.appendChild(this.person.getPostInExtendedCard());  
-    }
-    if (this.person.getLastStringInExtendedCard()) {
-      divDesc.appendChild(this.person.getLastStringInExtendedCard());   
-    }
-
-    div.appendChild(divDesc);
-
-    let divImg = document.createElement("div");
-    divImg.classList.add("card__image");
-    let img = document.createElement("img");
-    img.setAttribute("src", this.person.photoUrl);
-    divImg.appendChild(img);
-
-    div.appendChild(divImg);
-
-    return div;
+    let postInExtendedCard = (this.person.getPostInExtendedCard()) ? this.person.getPostInExtendedCard() : null;
+    let lastStringInExtendedCard = (this.person.getLastStringInExtendedCard()) ? this.person.getLastStringInExtendedCard() : null;
+    let times = "\u00D7";  // крестик &times
+    return React.createElement('div', {className: 'card card__popupInfo', key: this.id},  
+              React.createElement('div', {id: "times", className: 'card__image_times'}, times), //&times
+              React.createElement('div', {id: "times", className: 'card__description'},
+                React.createElement('h3', {}, this.person.fullName),
+                React.createElement('span', {title: 'День рождения'}, "День рождения"),
+                React.createElement('p', {title: this.person.birthDateStr.concat(", ", this.person.age)}, this.person.birthDateStr.concat(", ", this.person.age)),
+                this.person.getPostInExtendedCard(),
+                this.person.getLastStringInExtendedCard()
+                ),
+              React.createElement('div', {className: 'card__image'},
+                React.createElement('img', {src: this.person.photoUrl})
+                )
+            );
   }
 
-  afterMount() {
-    this.container.querySelector('.card__image_times').addEventListener('click', (event) => {popupList.clear(); event.stopPropagation()});
+  componentDidMount() {
+    ReactDOM.findDOMNode(this).querySelector('.card__image_times').addEventListener('click', (event) => {popupList.clear(); event.stopPropagation()});
 
     // Submit creation form
     if (document.getElementById("formUpdate")) {

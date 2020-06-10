@@ -4,32 +4,23 @@ import {Person} from './personLib.js'
 
 export class Student extends Person {
 
-  constructor(params) {
-    super(params);
-    this.university = params.university;
-    this.course = params.course;
-    this.type = params.type;
+  constructor(props) {
+    super(props);
+    this.university = this.props.person.university;
+    this.course = this.props.person.course;
+    this.type = this.props.person.type;
   }
 
   getLastStringInCard = () => {
-    let span = document.createElement("span");
-    span.setAttribute("title", this.university.concat(" ", this.course));
-    span.appendChild(document.createTextNode(this.university.concat(" ", this.course)));
-    return span;
+    return React.createElement('span', {title: this.university.concat(" ", this.course)}, this.university.concat(" ", this.course));
   }
 
   getPostInExtendedCard = () => {
-    let span = document.createElement("span");
-    span.setAttribute("title", "Учится");
-    span.appendChild(document.createTextNode("Учится"));
-    return span;
+    return React.createElement('span', {title: "Учится"}, "Учится");
   }
 
   getLastStringInExtendedCard = () => {
-    let p = document.createElement("p");
-    p.setAttribute("title", this.university.concat(", ", this.course, " курс"));
-    p.appendChild(document.createTextNode(this.university.concat(", ", this.course, " курс")));
-    return p;
+    return React.createElement('p', {title: this.university.concat(", ", this.course, " курс")}, this.university.concat(", ", this.course, " курс"));
   }
 
 

@@ -24,22 +24,7 @@ class ViewPerson {
   render(page, limit) {
     let personArr = dataSet.getList((page + 1), limit);
     personArr.then(arr => {
-      arr.forEach((item) => {
-          let person;
-          switch(item.type) {
-            case 'student':
-              person = componentFactory.create(Student, item);
-              break;
-            case 'teacher':
-              person = componentFactory.create(Teacher, item);
-              break;
-            default:
-              person = componentFactory.create(Person, item);
-              break;
-          }
-          school.enroll(person);  
-      });
-      school.appendToDOM();
+      ReactDOM.render(React.createElement(School, {persons: arr}), document.getElementById('persons') );
     });
   }
 
@@ -86,8 +71,7 @@ if (pageInfo.countPersons == 0) {  // Если кол-во нет персон, 
 let buttons = document.getElementsByClassName('view__button');
 for (let i = 0; i < buttons.length; i++) {
   buttons[i].addEventListener('click', (event) => {
-    document.getElementById('persons').innerHTML = "";
-    school.schoolList.list = [];
+    ReactDOM.unmountComponentAtNode(document.getElementById('persons'));
     switch(event.target.getAttribute('id')) {
       case 'prevButton':
         pageInfo.currentPage = ((pageInfo.currentPage - 1 + pageInfo.countPages) % pageInfo.countPages);

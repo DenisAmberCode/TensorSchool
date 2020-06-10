@@ -4,32 +4,23 @@ import {Person} from './personLib.js'
 
 export class Teacher extends Person {
 
-  constructor(params) {
-    super(params);
-    this.university = params.university;
-    this.post = params.post;
-    this.type = params.type;
+  constructor(props) {
+    super(props);
+    this.university = this.props.person.university;
+    this.post = this.props.person.post;
+    this.type = this.props.person.type;
   }
 
   getLastStringInCard = () => {
-    let span = document.createElement("span");
-    span.setAttribute("title", this.post);
-    span.appendChild(document.createTextNode(this.post));
-    return span;
+    return React.createElement('span', {title: this.post}, this.post);
   }
 
   getPostInExtendedCard = () => {
-    let span = document.createElement("span");
-    span.setAttribute("title", "Преподаёт");
-    span.appendChild(document.createTextNode("Преподаёт"));
-    return span;
+    return React.createElement('span', {title: "Преподаёт"}, "Преподаёт");
   }
 
   getLastStringInExtendedCard = () => {
-    let p = document.createElement("p");
-    p.setAttribute("title", this.university);
-    p.appendChild(document.createTextNode(this.university));
-    return p;
+    return React.createElement('p', {title: this.university}, this.university);
   }
 
 

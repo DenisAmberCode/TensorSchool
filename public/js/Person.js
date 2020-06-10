@@ -1,17 +1,17 @@
-import {Component, Popup,} from './personLib.js';
+import {Popup} from './personLib.js';
 import {popupList, dataSet} from './app.js'
 
 'use strict';
 
-export class Person extends Component{
+export class Person extends React.Component{
 
-  constructor(params) {
-    super(params);
-    this.id = params.id;
+  constructor(props) {
+    super(props);
+    this.id = this.props.person.id;
     this.type = 'Person';
-    this.fullName = params.fullName;
-    this.birthDate = new Date(params.birthDate);
-    this.photoUrl = params.photoUrl || "/image/anonymous.jpg";
+    this.fullName = this.props.person.fullName;
+    this.birthDate = new Date(this.props.person.birthDate);
+    this.photoUrl = this.props.person.photoUrl || "/image/anonymous.jpg";
   }
 
   get birthDateStr() {
@@ -51,49 +51,34 @@ export class Person extends Component{
   }
 
   getPersonBlock = () => {
-    let div = document.createElement("div");
-    div.classList.add("person");
-    let img = document.createElement("img");
-    img.setAttribute("src", this.photoUrl);
-    img.setAttribute("alt", this.fullName);
-    div.appendChild(img);
-    let p = document.createElement("p");
-    p.setAttribute("title", this.fullName);
-    p.appendChild(document.createTextNode(this.fullName));
-    div.appendChild(p);
-    if (this.getLastStringInCard()) {
-      div.appendChild(this.getLastStringInCard());
-    }
-    let btnDiv = document.createElement("div");
-    let btn1 = document.createElement("input");
-    btn1.setAttribute("class", "btn btnDel");
-    btn1.setAttribute("type", "submit");
-    btn1.setAttribute("name", "buttonDel");
-    btn1.setAttribute("value", "Удалить");
-    btnDiv.appendChild(btn1);
-    let btn2 = document.createElement("input");
-    btn2.setAttribute("class", "btn btnUpdate");
-    btn2.setAttribute("type", "submit");
-    btn2.setAttribute("name", "buttonUpdate");
-    btn2.setAttribute("value", "Обновить");
-    btnDiv.appendChild(btn2);
-    div.appendChild(btnDiv)
-    return div;
+    let lastStringInCard = (this.getLastStringInCard()) ? this.getLastStringInCard() : null; 
+    return React.createElement('div', {className: 'person', key: this.id},
+              React.createElement('div', {className: 'person__popupCard'}),  
+              React.createElement('img', {src: this.photoUrl, alt: this.fullName}),
+              React.createElement('p', {title: this.fullName},  this.fullName),
+              lastStringInCard,
+              React.createElement('div', {},
+                React.createElement('input', {className: 'btn btnDel', type: 'submit', name: 'buttonDel', value: 'Удалить'}),
+                React.createElement('input', {className: 'btn btnUpdate', type: 'submit', name: 'buttonUpdate', value: 'Обновить'})
+                 )
+            );
   }
 
   render = () => {
     return this.getPersonBlock();
   }
 
-  afterMount() {
-    this.container.addEventListener('click', (event) => {this.onClick(event)});
-    (this.container.getElementsByClassName('btnDel')[0]).addEventListener('click', (event) => {
+  // прехук после монтирования
+  componentDidMount() {
+    let personContainer = ReactDOM.findDOMNode(this);
+    personContainer.addEventListener('click', (event) => {this.onClick(event)});
+    (personContainer.getElementsByClassName('btnDel')[0]).addEventListener('click', (event) => {
       dataSet.beforeDelete();
       dataSet.delete(this.id);
       dataSet.afterDelete();
       event.stopPropagation();
     });
-    (this.container.getElementsByClassName('btnUpdate')[0]).addEventListener('click', (event) => {this.onClick(event)});
+    (personContainer.getElementsByClassName('btnUpdate')[0]).addEventListener('click', (event) => {this.onClick(event)});
 
   }
 
@@ -105,7 +90,9 @@ export class Person extends Component{
       }
       this.popup = new Popup({person: this, event: event});
       popupList.popups.push(this.popup);
-      this.popup.mount(this.container, 'afterBegin');
+      // this.popup.mount(this.container, 'afterBegin');
+      let popupCardContainer = ReactDOM.findDOMNode(this).getElementsByClassName('person__popupCard')[0];
+      ReactDOM.render(React.createElement(Popup, {person: this, event: event}), popupCardContainer );
     }
   }
 
