@@ -1,4 +1,3 @@
-export {Component} from './Component.js';
 export {PersonFactory} from './PersonFactory.js';
 export {School} from './School.js';
 export {Person} from './Person.js';
