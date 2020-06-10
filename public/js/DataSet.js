@@ -122,6 +122,7 @@ export class DataSet {
     }  
   }
 
+  // Обновление количества персон на сервере
   ChangeTheNumberOfPersons(countPersons) {
     let jsonData = JSON.stringify({"countPersons": countPersons});
     this.query(        
