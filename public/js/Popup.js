@@ -110,7 +110,7 @@ export class Popup extends React.Component {
   componentDidMount() {
     ReactDOM.findDOMNode(this).querySelector('.card__image_times').addEventListener('click', (event) => {popupList.clear(); event.stopPropagation()});
 
-    // Submit creation form
+    // Submit updation form
     if (document.getElementById("formUpdate")) {
       formUpdate.onsubmit = async (event) => {
         event.preventDefault();
