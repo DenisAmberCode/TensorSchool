@@ -9,8 +9,6 @@ export class Teacher extends Person {
     this.state = Object.assign(this.state, 
       {university: this.props.person.university,
             post : this.props.person.post});
-    // this.university = this.props.person.university;
-    // this.post = this.props.person.post;
     this.type = this.props.person.type;
   }
 
