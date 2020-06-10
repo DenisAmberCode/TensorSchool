@@ -77,7 +77,7 @@ export class DataSet {
       });
   }
 
-  update(id, jsonData, OldPerson) {
+  update(id, jsonData) {
     return this.query(
       `${this.options.object}/${id}`,
       {
@@ -88,8 +88,8 @@ export class DataSet {
         body: jsonData
       }
     ).then(result => {
-      ReactDOM.unmountComponentAtNode(document.getElementById('persons'));
-      viewPerson.render(pageInfo.currentPage, pageInfo.currentLimit);
+      // ReactDOM.unmountComponentAtNode(document.getElementById('persons'));
+      // viewPerson.render(pageInfo.currentPage, pageInfo.currentLimit);
       return result;
     });
   }

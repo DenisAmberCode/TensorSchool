@@ -7,22 +7,27 @@ export class Person extends React.Component{
 
   constructor(props) {
     super(props);
+    this.state = {
+      fullName : this.props.person.fullName,
+      birthDate : new Date(this.props.person.birthDate),
+      photoUrl : this.props.person.photoUrl || "/image/anonymous.jpg"
+    }
     this.id = this.props.person.id;
     this.type = 'Person';
-    this.fullName = this.props.person.fullName;
-    this.birthDate = new Date(this.props.person.birthDate);
-    this.photoUrl = this.props.person.photoUrl || "/image/anonymous.jpg";
+    // this.fullName = this.props.person.fullName;
+    // this.birthDate = new Date(this.props.person.birthDate);
+    // this.photoUrl = this.props.person.photoUrl || "/image/anonymous.jpg";
   }
 
   get birthDateStr() {
     const months = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
-    let d = this.birthDate.getDate();
-    let m = months[this.birthDate.getMonth()];
+    let d = this.state.birthDate.getDate();
+    let m = months[this.state.birthDate.getMonth()];
     return d.toString().concat(" ",m);
   }
 
   get age() {
-    let birthDate = new Date(this.birthDate);
+    let birthDate = new Date(this.state.birthDate);
     let now = new Date();
     let diffDate = now.getFullYear() - birthDate.getFullYear();
     birthDate.setFullYear(birthDate.getFullYear() + diffDate);
@@ -54,8 +59,8 @@ export class Person extends React.Component{
     let lastStringInCard = (this.getLastStringInCard()) ? this.getLastStringInCard() : null; 
     return React.createElement('div', {className: 'person', key: this.id},
               React.createElement('div', {className: 'person__popupCard'}),  
-              React.createElement('img', {src: this.photoUrl, alt: this.fullName}),
-              React.createElement('p', {title: this.fullName},  this.fullName),
+              React.createElement('img', {src: this.state.photoUrl, alt: this.state.fullName}),
+              React.createElement('p', {title: this.state.fullName},  this.state.fullName),
               lastStringInCard,
               React.createElement('div', {},
                 React.createElement('input', {className: 'btn btnDel', type: 'submit', name: 'buttonDel', value: 'Удалить'}),
@@ -84,6 +89,11 @@ export class Person extends React.Component{
 
 
   onClick(event) {
+    // console.log(this);
+    // this.setState({
+    //   course: '5'
+    // });
+    // console.log(this.state);
     if (!event.currentTarget.getElementsByClassName('card').length) {
       if (popupList.popups) {
         popupList.clear();

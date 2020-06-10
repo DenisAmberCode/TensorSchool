@@ -6,13 +6,14 @@ export class Student extends Person {
 
   constructor(props) {
     super(props);
-    this.university = this.props.person.university;
-    this.course = this.props.person.course;
+    this.state = Object.assign(this.state, 
+      {university: this.props.person.university,
+           course: this.props.person.course});
     this.type = this.props.person.type;
   }
 
   getLastStringInCard = () => {
-    return React.createElement('span', {title: this.university.concat(" ", this.course)}, this.university.concat(" ", this.course));
+    return React.createElement('span', {title: this.state.university.concat(" ", this.state.course)}, this.state.university.concat(" ", this.state.course));
   }
 
   getPostInExtendedCard = () => {
@@ -20,7 +21,7 @@ export class Student extends Person {
   }
 
   getLastStringInExtendedCard = () => {
-    return React.createElement('p', {title: this.university.concat(", ", this.course, " курс")}, this.university.concat(", ", this.course, " курс"));
+    return React.createElement('p', {title: this.state.university.concat(", ", this.state.course, " курс")}, this.state.university.concat(", ", this.state.course, " курс"));
   }
 
 

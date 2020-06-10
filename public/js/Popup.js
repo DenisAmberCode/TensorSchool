@@ -94,14 +94,14 @@ export class Popup extends React.Component {
     return React.createElement('div', {className: 'card card__popupInfo', key: this.id},  
               React.createElement('div', {id: "times", className: 'card__image_times'}, times), //&times
               React.createElement('div', {id: "times", className: 'card__description'},
-                React.createElement('h3', {}, this.person.fullName),
+                React.createElement('h3', {}, this.person.state.fullName),
                 React.createElement('span', {title: 'День рождения'}, "День рождения"),
                 React.createElement('p', {title: this.person.birthDateStr.concat(", ", this.person.age)}, this.person.birthDateStr.concat(", ", this.person.age)),
                 this.person.getPostInExtendedCard(),
                 this.person.getLastStringInExtendedCard()
                 ),
               React.createElement('div', {className: 'card__image'},
-                React.createElement('img', {src: this.person.photoUrl})
+                React.createElement('img', {src: this.person.state.photoUrl})
                 )
             );
   }
@@ -115,12 +115,50 @@ export class Popup extends React.Component {
         event.preventDefault();
         let formData = new FormData(formUpdate);
 
-        let object = {};
-        formData.forEach((value, key) => {object[key] = value});
-        let jsonData = JSON.stringify(object);
+        let newPerson = {};
+        formData.forEach((value, key) => {newPerson[key] = value});
+        let jsonData = JSON.stringify(newPerson);
         let id = this.person.id;
+        
+        // Обновляем state у персоны
+        for (let key in newPerson) {
+          switch (key) {
+            case 'fullName':
+              this.person.setState({
+                fullName : newPerson[key]
+              });
+              break;
+            case 'birthDate':
+              this.person.setState({
+                birthDate : new Date(newPerson[key])
+              });
+              break;
+            case 'university':
+              this.person.setState({
+                university : newPerson[key]
+              });
+              break;
+            case 'course':
+              this.person.setState({
+                course : newPerson[key]
+              });
+              break;
+            case 'post':
+              this.person.setState({
+                post : newPerson[key]
+              });
+              break;    
+            case 'photoUrl':
+              this.person.setState({
+                photoUrl : newPerson[key]
+              });
+              break;         
+          }
+        }
 
-        await dataSet.update(id, jsonData, this.person);
+        popupList.clear();
+
+        await dataSet.update(id, jsonData);
       };
     }
   }

@@ -6,13 +6,16 @@ export class Teacher extends Person {
 
   constructor(props) {
     super(props);
-    this.university = this.props.person.university;
-    this.post = this.props.person.post;
+    this.state = Object.assign(this.state, 
+      {university: this.props.person.university,
+            post : this.props.person.post});
+    // this.university = this.props.person.university;
+    // this.post = this.props.person.post;
     this.type = this.props.person.type;
   }
 
   getLastStringInCard = () => {
-    return React.createElement('span', {title: this.post}, this.post);
+    return React.createElement('span', {title: this.state.post}, this.state.post);
   }
 
   getPostInExtendedCard = () => {
@@ -20,7 +23,7 @@ export class Teacher extends Person {
   }
 
   getLastStringInExtendedCard = () => {
-    return React.createElement('p', {title: this.university}, this.university);
+    return React.createElement('p', {title: this.state.university}, this.state.university);
   }
 
 
