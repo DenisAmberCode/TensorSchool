@@ -90,7 +90,6 @@ export class Person extends React.Component{
       }
       this.popup = new Popup({person: this, event: event});
       popupList.popups.push(this.popup);
-      // this.popup.mount(this.container, 'afterBegin');
       let popupCardContainer = ReactDOM.findDOMNode(this).getElementsByClassName('person__popupCard')[0];
       ReactDOM.render(React.createElement(Popup, {person: this, event: event}), popupCardContainer );
     }
