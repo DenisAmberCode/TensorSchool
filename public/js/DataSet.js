@@ -40,7 +40,6 @@ export class DataSet {
   }
 
   create(jsonData) {
-    let divPersons = document.getElementById('persons');
     return this.query(
         `${this.options.object}`,
         {
