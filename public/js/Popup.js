@@ -105,7 +105,8 @@ export class Popup extends React.Component {
                 )
             );
   }
-
+  
+  // прехук после монтирования
   componentDidMount() {
     ReactDOM.findDOMNode(this).querySelector('.card__image_times').addEventListener('click', (event) => {popupList.clear(); event.stopPropagation()});
 
