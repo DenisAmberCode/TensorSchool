@@ -75,9 +75,7 @@ export class Person extends React.Component{
     let personContainer = ReactDOM.findDOMNode(this);
     personContainer.addEventListener('click', (event) => {this.onClick(event)});
     (personContainer.getElementsByClassName('btnDel')[0]).addEventListener('click', (event) => {
-      dataSet.beforeDelete();
       dataSet.delete(this.id);
-      dataSet.afterDelete();
       event.stopPropagation();
     });
     (personContainer.getElementsByClassName('btnUpdate')[0]).addEventListener('click', (event) => {this.onClick(event)});

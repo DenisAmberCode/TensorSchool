@@ -92,13 +92,15 @@ export class DataSet {
   }
 
   delete(id) {
+    this.beforeDelete();
     return this.query(
         `${this.options.object}/${id}`,
         {
           method: 'DELETE'
         }
       ).then(result => {
-        return this.toModel(result);
+        this.afterDelete();
+        return result;
       });
   }
 
