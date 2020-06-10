@@ -158,7 +158,8 @@ export class Popup extends React.Component {
         }
 
         popupList.clear();
-
+        
+        // Обновляем persons на сервере
         await dataSet.update(id, jsonData);
       };
     }
