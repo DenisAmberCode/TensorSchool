@@ -14,9 +14,6 @@ export class Person extends React.Component{
     }
     this.id = this.props.person.id;
     this.type = 'Person';
-    // this.fullName = this.props.person.fullName;
-    // this.birthDate = new Date(this.props.person.birthDate);
-    // this.photoUrl = this.props.person.photoUrl || "/image/anonymous.jpg";
   }
 
   get birthDateStr() {
@@ -89,11 +86,6 @@ export class Person extends React.Component{
 
 
   onClick(event) {
-    // console.log(this);
-    // this.setState({
-    //   course: '5'
-    // });
-    // console.log(this.state);
     if (!event.currentTarget.getElementsByClassName('card').length) {
       if (popupList.popups) {
         popupList.clear();
