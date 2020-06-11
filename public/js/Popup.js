@@ -116,46 +116,14 @@ export class Popup extends React.Component {
         event.preventDefault();
         let formData = new FormData(formUpdate);
 
-        let newPerson = {};
-        formData.forEach((value, key) => {newPerson[key] = value});
-        let jsonData = JSON.stringify(newPerson);
+        let newPersonState = {};
+        formData.forEach((value, key) => {newPersonState[key] = value});
+        let jsonData = JSON.stringify(newPersonState);
         let id = this.person.id;
         
         // Обновляем state у персоны
-        for (let key in newPerson) {
-          switch (key) {
-            case 'fullName':
-              this.person.setState({
-                fullName : newPerson[key]
-              });
-              break;
-            case 'birthDate':
-              this.person.setState({
-                birthDate : new Date(newPerson[key])
-              });
-              break;
-            case 'university':
-              this.person.setState({
-                university : newPerson[key]
-              });
-              break;
-            case 'course':
-              this.person.setState({
-                course : newPerson[key]
-              });
-              break;
-            case 'post':
-              this.person.setState({
-                post : newPerson[key]
-              });
-              break;    
-            case 'photoUrl':
-              this.person.setState({
-                photoUrl : newPerson[key]
-              });
-              break;         
-          }
-        }
+        newPersonState.birthDate = new Date(newPersonState.birthDate)
+        this.person.setState(newPersonState);
 
         popupList.clear();
         
