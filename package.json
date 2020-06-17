@@ -1,15 +1,17 @@
 {
-  "name": "tensorschool-lesson00",
+  "name": "tensor_school_server",
   "version": "1.0.0",
-  "description": "My first homework",
-  "main": "index.js",
+  "description": "",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "test": "jest ./public/test/jest.test.js",
+    "dev": "nodemon server.js"
   },
-  "author": "Denis Gladkii",
+  "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "json-server": "^0.12.1"
   }
 }
