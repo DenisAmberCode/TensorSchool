@@ -40,6 +40,11 @@ export class Person extends React.Component{
     }
   }
 
+  //  Возвращает дату рождения в формате YYYY-MM-DD
+  get birthDateFormat() {
+    return this.state.birthDate.toISOString().slice(0,10);
+  }
+
   getLastStringInCard = () => {
     return;
   }

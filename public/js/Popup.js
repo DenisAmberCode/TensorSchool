@@ -41,18 +41,27 @@ export class Popup extends React.Component {
 
   renderPopupForm() {
     let lastInput = null;
+    let universityInput = null;
     let classCard__form_inputPerson = '';
     switch (this.person.type) {
       case 'student':
         lastInput = React.createElement('label', {},
           "Укажите ваш курс",
-          React.createElement('input', {type: "number", min: "1", name: "course", required: true, placeholder: "Курс"})
+          React.createElement('input', {type: "number", min: "1", name: "course", required: true, defaultValue: this.person.state.course})
+        );
+        universityInput = React.createElement('label', {},
+          "Ваш университет",
+          React.createElement('input', {type: "text", name: "university", required: true, defaultValue: this.person.state.university}),
         );
         break;
       case 'teacher':
         lastInput = React.createElement('label', {},
           "Укажите вашу должность",
-          React.createElement('input', {type: "text", name: "post", required: true, placeholder: "Преподаватель"})
+          React.createElement('input', {type: "text", name: "post", required: true, defaultValue: this.person.state.post})
+        );
+        universityInput = React.createElement('label', {},
+          "Ваш университет",
+          React.createElement('input', {type: "text", name: "university", required: true, defaultValue: this.person.state.university}),
         );
         break;
       default:
@@ -68,15 +77,13 @@ export class Popup extends React.Component {
               React.createElement('fieldset', {className: 'form__info'},
                 React.createElement('label', {},
                   "Новое имя и фамилия",
-                  React.createElement('input', {type: "text", name: "fullName", required: true, placeholder: "Иван Иванов"}),
+                  React.createElement('input', {type: "text", name: "fullName", required: true, defaultValue: this.person.state.fullName}),
                 ),
-                React.createElement('label', {},
-                  "Ваш университет",
-                  React.createElement('input', {type: "text", name: "university", required: true, placeholder: "University"}),
-                ),
+				universityInput
+				,
                 React.createElement('label', {},
                   "Ваш День рождения (ГГГГ-ММ-ДД)",
-                  React.createElement('input', {type: "text", name: "birthDate", required: true, pattern: patternDate, placeholder: "1998-01-15"}),
+                  React.createElement('input', {type: "text", name: "birthDate", required: true, pattern: patternDate, defaultValue: this.person.birthDateFormat}),
                 ),
                 lastInput
               ),
